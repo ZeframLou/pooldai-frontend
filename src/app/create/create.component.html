@@ -1,0 +1,130 @@
+<div class="container">
+    <div class="row justify-content-center mb-4 mt-4" routerLink="/" style="cursor: pointer;">
+      <div class="col-auto">
+        <img src="assets/img/dai.svg" />
+      </div>
+      <div class="col-auto">
+        <h1 class="display-3">Pool DAI</h1>
+      </div>
+    </div>
+  
+    <div class="row justify-content-center mt-3" *ngIf="!hasCreatedPool">
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h4>Create Pool</h4>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Create a pool that donates to your favorite charity, project, or content creator. Or your mom,
+              anyone really.
+            </p>
+            <p class="card-text">
+              It's completely free (other than the Ethereum gas cost) and open to everyone.
+            </p>
+            <hr class="my-4">
+  
+            <div class="form-group">
+              <label class="col-form-label" for="inputName">
+                Token Name
+              </label>
+              <input [(ngModel)]="tokenName" type="text" class="form-control" placeholder="Ethereum Foundation"
+                id="inputName" aria-describedby="helpName">
+              <small id="helpName" class="form-text">The name of the token that will be created. Example: the name of the
+                charities/people/projects who would receive
+                the donation.</small>
+            </div>
+  
+            <div class="form-group">
+              <label class="col-form-label" for="inputSymbol">
+                Token Symbol
+              </label>
+              <input [(ngModel)]="tokenSymbol" type="text" class="form-control" placeholder="pDAI-EF" id="inputSymbol"
+                aria-describedby="helpSymbol">
+              <small id="helpSymbol" class="form-text">Symbol of the ERC20 token used for redeeming deposits. Preferrably
+                in the form "pDAI-xxx".</small>
+            </div>
+  
+            <div class="form-group">
+              <label class="col-form-label" for="inputAddress">
+                Beneficiaries' Ethereum Accounts
+              </label>
+              <input [(ngModel)]="beneficiaryEthereumAccount" type="text" class="form-control"
+                placeholder="0xc0FcF8403e10B65f1D18f1B81b093004B1127275, 0x58b64a1feAC144eb077627C9C6b66cE2097396Af"
+                id="inputAddress" aria-describedby="helpAddress">
+              <small id="helpAddress" class="form-text">The Ethereum accounts that will receive the donations. Input
+                multiple beneficiaries by separating the addresses with commas.</small>
+            </div>
+  
+            <div class="form-group">
+              <label class="col-form-label" for="inputAddress">
+                Beneficiaries' Weights
+              </label>
+              <input [(ngModel)]="beneficiaryWeights" type="text" class="form-control" placeholder="80, 20"
+                id="inputWeights" aria-describedby="helpWeights">
+              <small id="helpWeights" class="form-text">Weights that determine the proportion of the donation that each
+                beneficiary receives. Weights should be whole numbers separated by commas.</small>
+            </div>
+  
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="renounceOwnershipCheck" class="custom-control-input"
+                  id="renounceOwnershipCheck" aria-describedby="helpRenounceOwnership">
+                <label class="custom-control-label" for="renounceOwnershipCheck">Renounce ownership of the pool</label>
+                <small id="helpRenounceOwnership" class="form-text"><b>Recommended:</b> Renouncing your ownership makes
+                  the pool
+                  more trust-worthy, because having ownership of the pool allows you to change the
+                  beneficiary in the future.</small>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="devSupportCheck" class="custom-control-input" id="devSupportCheck"
+                  aria-describedby="helpDevSupport">
+                <label class="custom-control-label" for="devSupportCheck">Give 5% of donations to support PoolDAI's
+                  development</label>
+                <small id="helpDevSupport" class="form-text">Pays for my morning cup of coffee. Why not? It's not like it
+                  costs anything 😉</small>
+              </div>
+            </div>
+  
+            <button type="button" class="btn btn-success justify-content-center" (click)="createPool()">
+              Create Pool
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row justify-content-center mt-3" *ngIf="hasCreatedPool">
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">
+            <h4>Success!</h4>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              You have successfully created a pool donating to <b>{{tokenName}}</b>. Now, people from around the
+              globe can support <b>{{tokenName}}</b> at no cost!
+            </p>
+            <p class="card-text">
+              A good next step would be to take the privilege of being the first one to put money in the pool. Or if you
+              think creating the pool is already enough work, go ahead and share the pool with everyone on Twitter or
+              something.
+            </p>
+            <p class="card-text">
+              (Do wait for the transaction to go through. You can see its status from, well, the status messages. Or go to
+              <a target="_blank" href="https://etherscan.io/tx/{{txHash}}">Etherscan</a>.)
+            </p>
+            <p class="card-text">
+              The link to your new pool is below:
+            </p>
+            <hr class="my-4">
+            <a target="_blank"
+              href="{{baseUrl}}/pool-dai/pool/{{createdPoolAddress}}">{{baseUrl}}/pool-dai/pool/{{createdPoolAddress}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,193 @@
+<div class="container">
+    <div class="row">
+        <div class="container-fluid" style="margin-top: 5%">
+            <div class="alert alert-light">
+                <p class="mb-0 text-center">⚠️ The smart contracts used are not audited, use at your own risk.</p>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-auto">
+                    <img src="assets/img/dai.svg" />
+                </div>
+                <div class="col-auto">
+                    <h1 class="display-3">Pool DAI</h1>
+                </div>
+            </div>
+            <p class="lead text-center">
+                A no-loss donation protocol enabling people to pool money together, lend it out, and donate the interest
+                to a
+                cause.
+            </p>
+            <p class="lead text-center">
+                Powered by <a target="_blank" href="https://ethereum.org/">Ethereum</a>,
+                <a target="_blank" href="https://compound.finance/">Compound</a>,
+                <a target="_blank" href="https://www.makerdao.com/">MakerDAO</a>,
+                <a target="_blank" href="https://kyber.network/">Kyber Network</a>,
+                <a target="_blank" href="https://blocknative.com/">Blocknative</a>,
+                and <a target="_blank" href="https://thegraph.com/">The Graph</a>.
+            </p>
+            <hr class="my-4">
+
+            <div class="card-deck justify-content-center">
+                <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Step 1: Create Pool</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            Create a pool that donates to your favorite charity, project, or content creator. Or your
+                            mom,
+                            anyone really.
+                        </p>
+                        <p class="card-text">
+                            It's completely free (other than the Ethereum gas cost) and open to everyone.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Step 2: Put In $$$</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            Use Ether, DAI, and 70+ other tokens to fill the pool!
+                        </p>
+                        <p class="card-text">
+                            Withdraw your deposit at any time!
+                        </p>
+                        <p class="card-text">
+                            Invite your friends to donate!
+                        </p>
+                        <p class="card-text">
+                            It's actually not a Ponzi scheme!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Step 3: Profit!</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            The beneficiary now gets a constant stream of donations, at no cost to yourself! It's magic!
+                        </p>
+                        <p class="card-text">
+                            You receive an ERC20 token that's pegged to DAI, so you can transfer your deposit or put it
+                            in cold
+                            storage
+                            while donating every second!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5 mt-5">
+        <button routerLink="/create" type="button" class="btn btn-success btn-lg">
+            Click here to create a pool, because what do you have to lose, eh?
+        </button>
+    </div>
+
+    <div class="row mt-4 mb-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <!-- Title -->
+                            <h4 class="card-header-title" i18n>
+                                Pools
+                            </h4>
+                        </div>
+                        <div class="col-auto">
+                            <!-- Refresh -->
+                            <button type="button" class="btn btn-primary btn-sm" (click)="refresh()">
+                                <span *ngIf="!isLoading">
+                                    Refresh
+                                </span>
+                                <span *ngIf="isLoading">
+                                    Loading...
+                                </span>
+                            </button>
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <input type="search" [(ngModel)]="searchEntry" class="form-control search"
+                                placeholder="Search for pool (case sensitive)..." (keyup.enter)="search()">
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="clickable" scope="col" (click)="sortBy('name')">Name</th>
+                            <th class="clickable" scope="col" (click)="sortBy('totalSupply')">Pool Size</th>
+                            <th class="clickable" scope="col" (click)="sortBy('totalInterestWithdrawn')">Interest
+                                Donated So Far</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pool-table">
+                        <tr *ngFor="let pool of poolList" [routerLink]="['/pool', pool.id]">
+                            <td>
+                                {{pool.name}}
+                            </td>
+                            <td>
+                                {{toBigNumber(pool.totalSupply).toFixed(6)}} DAI
+                            </td>
+                            <td>
+                                {{toBigNumber(pool.totalInterestWithdrawn).toFixed(6)}} DAI
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <ul class="pagination text-white">
+                <li class="page-item" [ngClass]="{'disabled' : currentPage() == 1}"
+                    (click)="goToPage(currentPage() - 1)">
+                    <a class="page-link clickable">&laquo;</a>
+                </li>
+
+                <ng-container *ngFor="let i of getPageNumberList()">
+                    <li class="page-item" [ngClass]="{'active' : currentPage() == i + 1}" (click)="goToPage(i + 1)">
+                        <a class="page-link clickable">{{i + 1}}</a>
+                    </li>
+                </ng-container>
+
+                <li class="page-item" [ngClass]="{'disabled' : currentPage() == numPages()}"
+                    (click)="goToPage(currentPage() + 1)">
+                    <a class="page-link clickable">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <footer class="mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a target="_blank"
+                            href="https://github.com/ZeframLou/pooled-cdai">GitHub
+                            Repo</a></li>
+                    <li class="breadcrumb-item"><a target="_blank"
+                            href="https://thegraph.com/explorer/subgraph/zeframlou/pooled-cdai">GraphQL API</a></li>
+                    <li class="breadcrumb-item"><a target="_blank" href="https://t.me/pooldai">Telegram Group</a></li>
+                </ol>
+                <p>
+                    Made by <a target="_blank" href="https://github.com/ZeframLou">Zefram Lou</a>.
+                </p>
+                <p>
+                    Released under <a target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLV3</a>.
+                </p>
+            </div>
+        </div>
+    </footer>
+</div>
