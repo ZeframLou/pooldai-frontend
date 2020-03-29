@@ -321,7 +321,7 @@ export class PoolComponent extends ApolloAndWeb3Enabled implements OnInit {
   }
 
   async displayInterestAccrued() {
-    let web3Instance = new Web3('wss://mainnet.infura.io/ws/v3/1f24e70482f84d1e8d55183921fe2c3f');
+    let web3Instance = new Web3(`wss://mainnet.infura.io/ws/v3/${this.infuraKey}`);
     let token = this.pcDAI(web3Instance);
     this.interestAccrued = new BigNumber(await token.methods.accruedInterestCurrent().call()).div(1e18);
   }

@@ -18,10 +18,10 @@ export class Web3Enabled {
   constructor(public web3: Web3) {
     this.assistInstance = null;
     this.blocknativeAPIKey = "239ccd50-62da-4e2f-aaf4-b33d39a3a0a6";
-    this.infuraKey = "9e5f0d08ad19483193cc86092b7512f2";
-    this.portisAPIKey = "a838dbd2-c0b1-4465-8dbe-36b88f3d0d4e";
-    this.squarelinkKey = "564b947e352529c618f0";
-    this.fortmaticKey = "pk_live_937F9430B2CB3407";
+    this.infuraKey = "1f24e70482f84d1e8d55183921fe2c3f";
+    this.portisAPIKey = "0a3f8e0d-13d7-4369-ae4a-a581930fa130";
+    this.squarelinkKey = "43f4704b29f84cf48ed8";
+    this.fortmaticKey = "pk_live_74788433623FECEC";
     this.DAI_ADDR = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
   }
 
